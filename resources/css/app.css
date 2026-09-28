@@ -1,0 +1,408 @@
+@import "@fontsource/nunito/400.css";
+@import "@fontsource/nunito/600.css";
+@import "@fontsource/nunito/700.css";
+@import "@fontsource/nunito/800.css";
+@import "bootstrap/dist/css/bootstrap.min.css";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+@import "datatables.net-bs5/css/dataTables.bootstrap5.min.css";
+
+:root {
+    /* Brand Hasnur */
+    --hv-primary: #001F95;
+    --hv-primary-dark: #00136B;
+    --hv-primary-600: #001B86;
+    --hv-primary-light: #E8EEFF;
+    --hv-yellow: #FFF500;
+    --hv-green: #00923F;
+    --hv-red: #DA251D;
+    --hv-gray: #6C757D;
+
+    /* Netral */
+    --hv-bg: #F5F7FA;
+    --hv-surface: #FFFFFF;
+    --hv-border: #E3E8EF;
+    --hv-text: #1F2937;
+    --hv-text-muted: #6B7280;
+
+    --hv-shadow-sm: 0 2px 6px rgba(0, 31, 149, .06);
+    --hv-shadow-md: 0 10px 24px rgba(0, 31, 149, .10);
+
+    /* Override Bootstrap */
+    --bs-primary: #001F95;
+    --bs-primary-rgb: 0, 31, 149;
+    --bs-link-color: #001F95;
+    --bs-link-color-rgb: 0, 31, 149;
+    --bs-link-hover-color: #00136B;
+    --bs-body-bg: #F5F7FA;
+    --bs-body-color: #1F2937;
+}
+
+body {
+    font-family: "Nunito", "Segoe UI", system-ui, -apple-system, sans-serif;
+    background-color: var(--hv-bg);
+    color: var(--hv-text);
+}
+
+/* ===== Brand surfaces ===== */
+.bg-hv {
+    background: linear-gradient(135deg, #00136B 0%, #001F95 60%, #001B86 100%);
+}
+
+/* ===== Topbar (header admin) ===== */
+.hv-topbar {
+    background-color: var(--hv-primary);
+    border: 0;
+    border-radius: 16px;
+    box-shadow: var(--hv-shadow-md);
+    position: sticky;
+    top: .75rem;
+    z-index: 1030;
+    padding: .55rem 1rem;
+}
+
+.hv-topbar .navbar-brand {
+    color: #fff;
+    font-size: 1.15rem;
+}
+.hv-topbar .brand-sub {
+    font-size: .62rem;
+    letter-spacing: .08em;
+    color: rgba(255, 255, 255, .7);
+    font-weight: 700;
+}
+.hv-topbar .navbar-toggler {
+    border-color: rgba(255, 255, 255, .4);
+}
+.hv-topbar .navbar-toggler:focus {
+    box-shadow: 0 0 0 .2rem rgba(255, 255, 255, .2);
+}
+.hv-topbar .navbar-toggler-icon {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* Menu horizontal: digeser ke kanan, mepet dengan avatar */
+.hv-nav .nav-link {
+    color: rgba(255, 255, 255, .85);
+    font-weight: 600;
+    font-size: .9rem;
+    border-radius: 999px;
+    padding: .4rem .9rem;
+    margin-left: .15rem;
+    transition: background-color .2s ease, color .2s ease;
+}
+.hv-nav .nav-link:hover {
+    background-color: rgba(255, 255, 255, .12);
+    color: #fff;
+}
+.hv-nav .nav-link.active {
+    background-color: rgba(255, 255, 255, .20);
+    border: 1px solid rgba(255, 255, 255, .40);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    color: #fff;
+    font-weight: 700;
+}
+
+/* Avatar inisial di kanan atas: gradasi hijau -> kuning */
+.hv-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #007A34 0%, #5FA81F 55%, #FFF500 100%);
+    color: #fff;
+    font-weight: 800;
+    font-size: .95rem;
+    border: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, .35);
+}
+.hv-avatar:hover,
+.hv-avatar:focus {
+    background: linear-gradient(135deg, #006B2D 0%, #52961B 55%, #E6DD00 100%);
+    color: #fff;
+    box-shadow: 0 0 0 .2rem rgba(255, 245, 0, .35);
+}
+
+/* Dropdown (menu menggantung): putih dengan border hijau */
+.hv-dropdown {
+    background-color: #ffffff;
+    border: 2px solid var(--hv-green);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--hv-shadow-md);
+    min-width: 230px;
+    padding: .35rem 0;
+    font-size: .875rem;
+}
+.hv-dropdown .dropdown-item,
+.hv-dropdown .dropdown-item-text {
+    color: var(--hv-text);
+}
+.hv-dropdown .dropdown-item {
+    padding: .55rem 1rem;
+}
+.hv-dropdown .dropdown-item:hover,
+.hv-dropdown .dropdown-item:focus {
+    background-color: #E9F7EF;
+    color: #007A34;
+}
+.hv-dropdown .dropdown-divider {
+    border-color: var(--hv-border);
+    margin: .35rem 0;
+}
+/* Paksa teks bantuan pada dropdown terlihat di latar putih */
+.hv-dropdown .text-white-50 {
+    color: var(--hv-text-muted) !important;
+}
+
+.hv-header {
+    background-color: var(--hv-primary);
+}
+
+.text-hv {
+    color: var(--hv-primary);
+}
+
+.text-muted {
+    color: var(--hv-text-muted) !important;
+}
+
+/* ===== Buttons ===== */
+.btn-hv {
+    background-color: var(--hv-primary);
+    border-color: var(--hv-primary);
+    color: #fff;
+}
+.btn-hv:hover,
+.btn-hv:focus,
+.btn-hv:active {
+    background-color: var(--hv-primary-dark);
+    border-color: var(--hv-primary-dark);
+    color: #fff;
+}
+
+.btn-sso {
+    background-color: var(--hv-green);
+    border-color: var(--hv-green);
+    color: #fff;
+}
+.btn-sso:hover,
+.btn-sso:focus,
+.btn-sso:active {
+    background-color: #007a34;
+    border-color: #007a34;
+    color: #fff;
+}
+
+.btn-outline-primary {
+    --bs-btn-color: var(--hv-primary);
+    --bs-btn-border-color: var(--hv-primary);
+    --bs-btn-hover-bg: var(--hv-primary);
+    --bs-btn-hover-border-color: var(--hv-primary);
+    --bs-btn-active-bg: var(--hv-primary-dark);
+    --bs-btn-active-border-color: var(--hv-primary-dark);
+}
+
+.btn-check:focus + .btn,
+.btn:focus {
+    box-shadow: 0 0 0 .2rem rgba(0, 31, 149, .15);
+}
+
+/* Minimum touch target pada layar kecil */
+@media (max-width: 575.98px) {
+    .btn:not(.btn-sm):not(.btn-close) {
+        min-height: 44px;
+    }
+}
+
+/* ===== Cards ===== */
+.hv-card {
+    border: 0;
+    border-radius: 16px;
+    box-shadow: var(--hv-shadow-md);
+    background: var(--hv-surface);
+}
+
+.card-header {
+    border-top-left-radius: 16px !important;
+    border-top-right-radius: 16px !important;
+    border-bottom: 1px solid var(--hv-border);
+}
+
+/* ===== Forms ===== */
+.form-control,
+.form-select {
+    border-color: var(--hv-border);
+    border-radius: 10px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--hv-primary);
+    box-shadow: 0 0 0 .2rem rgba(0, 31, 149, .15);
+}
+
+.form-label {
+    font-weight: 600;
+}
+
+.form-control-lg {
+    border-radius: 12px;
+}
+
+/* Cegah auto-zoom di iOS */
+@media (max-width: 575.98px) {
+    .form-control,
+    .form-select {
+        font-size: 16px;
+    }
+}
+
+/* ===== Tables ===== */
+.table > :not(caption) > * > * {
+    padding: .8rem 1rem;
+    border-bottom-color: var(--hv-border);
+}
+
+.table thead th,
+.table .table-light th {
+    background-color: var(--hv-primary-light);
+    color: var(--hv-primary-dark);
+    font-weight: 700;
+    border-bottom: 1px solid var(--hv-border);
+}
+
+.table-hover > tbody > tr:hover > * {
+    --bs-table-hover-bg: #F5F7FA;
+}
+
+/* ===== Status badges ===== */
+.hv-status-active {
+    background-color: var(--hv-green);
+    color: #fff;
+}
+
+.hv-status-inactive {
+    background-color: var(--hv-red);
+    color: #fff;
+}
+
+.hv-status-notfound {
+    background-color: var(--hv-gray);
+    color: #fff;
+}
+
+/* ===== Links & pagination ===== */
+a {
+    color: var(--hv-primary);
+}
+a:hover {
+    color: var(--hv-primary-dark);
+}
+
+.pagination {
+    --bs-pagination-active-bg: var(--hv-primary);
+    --bs-pagination-active-border-color: var(--hv-primary);
+    --bs-pagination-color: var(--hv-primary);
+    --bs-pagination-hover-color: var(--hv-primary-dark);
+}
+
+/* ===== Modal ===== */
+.modal-content {
+    background-color: #fff;
+    border: 0;
+    border-radius: 16px;
+    box-shadow: var(--hv-shadow-md);
+}
+
+/* ===== DataTables ===== */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+    margin-bottom: .5rem;
+}
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select {
+    display: inline-block;
+    width: auto;
+}
+.dataTables_wrapper .dataTables_filter {
+    text-align: right;
+}
+.dataTables_wrapper table.dataTable {
+    margin-top: .25rem !important;
+    margin-bottom: .75rem !important;
+}
+.dataTables_wrapper table.dataTable thead th {
+    background-color: var(--hv-primary-light);
+    color: var(--hv-primary-dark);
+    font-weight: 700;
+    border-bottom: 1px solid var(--hv-border);
+}
+.dataTables_wrapper .pagination {
+    --bs-pagination-active-bg: var(--hv-primary);
+    --bs-pagination-active-border-color: var(--hv-primary);
+}
+
+/* ===== Skala tipografi konten (lebih kecil dari navbar) ===== */
+main {
+    font-size: .875rem;
+}
+main h1,
+main .h1 {
+    font-size: 1.1rem;
+}
+main h2,
+main .h2 {
+    font-size: 1.08rem;
+}
+main h3,
+main .h3 {
+    font-size: 1.05rem;
+}
+main h4,
+main .h4 {
+    font-size: 1.02rem;
+}
+main h5,
+main .h5 {
+    font-size: .95rem;
+}
+main .fs-1 {
+    font-size: 1.35rem !important;
+}
+main .fs-2 {
+    font-size: 1.2rem !important;
+}
+main .fs-3 {
+    font-size: 1.1rem !important;
+}
+main .fs-4 {
+    font-size: 1rem !important;
+}
+main .form-control,
+main .form-select {
+    font-size: .9rem;
+}
+main .form-control-lg {
+    font-size: 1rem;
+    padding: .5rem .85rem;
+}
+main .btn-lg {
+    font-size: .95rem;
+    padding: .5rem 1rem;
+}
+main .card-header {
+    font-size: .92rem;
+}
+
+/* ===== Misc ===== */
+@media (max-width: 575.98px) {
+    .hv-container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
