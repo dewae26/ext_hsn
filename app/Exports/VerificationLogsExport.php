@@ -24,7 +24,7 @@ class VerificationLogsExport implements FromQuery, ShouldAutoSize, WithEvents, W
      */
     public function headings(): array
     {
-        return ['Waktu', 'RS', 'Nomor PIC', 'Keterangan PIC', 'NRP', 'Nama', 'Entitas', 'PT', 'Hasil', 'Feedback', 'IP'];
+        return ['Waktu', 'RS', 'Nomor PIC', 'Keterangan PIC', 'NRP', 'Nama', 'Entitas', 'PT', 'KTP', 'Nominal Kamar', 'Hasil', 'Feedback', 'IP'];
     }
 
     /**
@@ -42,6 +42,8 @@ class VerificationLogsExport implements FromQuery, ShouldAutoSize, WithEvents, W
             $log->employee_name,
             $log->group_company,
             $log->company_name,
+            $log->ktp,
+            $log->room_rate,
             $log->result,
             $log->feedback,
             $log->ip,

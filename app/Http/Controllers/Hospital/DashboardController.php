@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Hospital;
 
 use App\Http\Controllers\Controller;
+use App\Models\HospitalContact;
 use App\Models\VerificationLog;
 use App\Services\EmployeeLookupService;
 use Illuminate\Http\Request;
@@ -30,16 +31,25 @@ class DashboardController extends Controller
 
         $result = $this->lookup->verify($validated['nrp']);
 
+        // Pastikan contact_id dari sesi masih valid (bisa berubah bila admin
+        // mengedit daftar nomor RS). Jika tidak ada, simpan sebagai null.
+        $contactId = $request->session()->get('hospital_contact_id');
+        if ($contactId && ! HospitalContact::whereKey($contactId)->where('hospital_id', $hospital->id)->exists()) {
+            $contactId = null;
+        }
+
         VerificationLog::create([
             'hospital_id' => $hospital->id,
             'hospital_name' => $hospital->name,
-            'hospital_contact_id' => $request->session()->get('hospital_contact_id'),
+            'hospital_contact_id' => $contactId,
             'pic_phone' => $request->session()->get('hospital_pic_phone'),
             'pic_label' => $request->session()->get('hospital_pic_label'),
             'nrp' => $result['nrp'],
             'employee_name' => $result['employee_name'],
             'group_company' => $result['group_company'],
             'company_name' => $result['company_name'],
+            'ktp' => $result['ktp'] ?? null,
+            'room_rate' => $result['room_rate'] ?? null,
             'result' => $result['result'],
             'feedback' => $result['feedback'],
             'ip' => $request->ip(),

@@ -56,6 +56,8 @@
                             <th>Nama</th>
                             <th>Entitas</th>
                             <th>PT</th>
+                            <th>KTP</th>
+                            <th>Nominal Kamar</th>
                             <th>Hasil</th>
                             <th>Feedback</th>
                             <th>IP</th>
@@ -82,13 +84,21 @@
                                 <td>{{ $log->employee_name ?? '-' }}</td>
                                 <td>{{ $log->group_company ?? '-' }}</td>
                                 <td>{{ $log->company_name ?? '-' }}</td>
+                                <td class="small text-nowrap">{{ $log->ktp ?? '-' }}</td>
+                                <td class="text-nowrap">
+                                    @if ($log->room_rate)
+                                        Rp {{ number_format($log->room_rate, 0, ',', '.') }}
+                                    @else
+                                        <span class="text-muted">-</span>
+                                    @endif
+                                </td>
                                 <td>@include('admin.logs._result-badge', ['result' => $log->result])</td>
                                 <td class="small">{{ $log->feedback }}</td>
                                 <td class="text-muted small">{{ $log->ip }}</td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="10" class="text-center text-muted py-4">Belum ada data.</td>
+                                <td colspan="12" class="text-center text-muted py-4">Belum ada data.</td>
                             </tr>
                         @endforelse
                     </tbody>

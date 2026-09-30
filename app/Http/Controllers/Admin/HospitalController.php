@@ -148,11 +148,15 @@ class HospitalController extends Controller
     }
 
     /**
-     * @param  array<int, array{label?: string, phone: string}>  $contacts
+     * Sinkronkan kontak RS tanpa mengubah ID yang sudah ada, agar sesi RS
+     * yang sedang aktif (menyimpan hospital_contact_id) tetap valid.
+     *
+     * @param  array<int, array{id?: mixed, label?: string, phone: string}>  $contacts
      */
     protected function syncContacts(Hospital $hospital, array $contacts): void
     {
-        $hospital->contacts()->delete();
+        $existingIds = $hospital->contacts()->pluck('id')->map(fn ($id) => (int) $id)->all();
+        $keptIds = [];
 
         foreach ($contacts as $contact) {
             $normalized = Hospital::normalizePhone($contact['phone'] ?? null);
@@ -161,13 +165,28 @@ class HospitalController extends Controller
                 continue;
             }
 
-            $hospital->contacts()->create([
-                'label' => $contact['label'] ?? null,
-                'phone' => $contact['phone'],
-                'phone_normalized' => $normalized,
-                'is_active' => true,
-            ]);
+            $id = isset($contact['id']) && $contact['id'] !== '' ? (int) $contact['id'] : null;
+
+            if ($id && in_array($id, $existingIds, true)) {
+                $hospital->contacts()->whereKey($id)->update([
+                    'label' => $contact['label'] ?? null,
+                    'phone' => $contact['phone'],
+                    'phone_normalized' => $normalized,
+                    'is_active' => true,
+                ]);
+                $keptIds[] = $id;
+            } else {
+                $created = $hospital->contacts()->create([
+                    'label' => $contact['label'] ?? null,
+                    'phone' => $contact['phone'],
+                    'phone_normalized' => $normalized,
+                    'is_active' => true,
+                ]);
+                $keptIds[] = (int) $created->id;
+            }
         }
+
+        $hospital->contacts()->whereNotIn('id', $keptIds)->delete();
     }
 
     /**
@@ -189,6 +208,7 @@ class HospitalController extends Controller
             'pks' => ['nullable', 'file', 'mimes:pdf', 'max:'.config('hasnurverif.pks.max_size_kb')],
             'is_active' => ['nullable', 'boolean'],
             'contacts' => ['required', 'array', 'min:1'],
+            'contacts.*.id' => ['nullable', 'integer'],
             'contacts.*.label' => ['nullable', 'string', 'max:100'],
             'contacts.*.phone' => ['required', 'string', 'max:25'],
         ], [

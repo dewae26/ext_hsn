@@ -17,6 +17,8 @@ class VerificationLog extends Model
         'employee_name',
         'group_company',
         'company_name',
+        'ktp',
+        'room_rate',
         'result',
         'feedback',
         'ip',

@@ -278,6 +278,24 @@ body {
     --bs-table-hover-bg: #F5F7FA;
 }
 
+/* ===== Tabel detail hasil verifikasi RS ===== */
+.hv-detail th {
+    width: 45%;
+    font-weight: 600;
+    color: var(--hv-text-muted);
+}
+.hv-detail .hv-detail-colon {
+    width: 1%;
+    white-space: nowrap;
+    color: var(--hv-text-muted);
+    padding-left: 0;
+    padding-right: 0;
+}
+.hv-detail td:last-child {
+    font-weight: 600;
+    color: var(--hv-text);
+}
+
 /* ===== Status badges ===== */
 .hv-status-active {
     background-color: var(--hv-green);

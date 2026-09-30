@@ -3,8 +3,8 @@
     $rows = old('contacts');
     if ($rows === null) {
         $rows = $hospital && $hospital->contacts->isNotEmpty()
-            ? $hospital->contacts->map(fn ($c) => ['label' => $c->label, 'phone' => $c->phone])->all()
-            : [['label' => '', 'phone' => '']];
+            ? $hospital->contacts->map(fn ($c) => ['id' => $c->id, 'label' => $c->label, 'phone' => $c->phone])->all()
+            : [['id' => '', 'label' => '', 'phone' => '']];
     }
 @endphp
 
@@ -42,6 +42,7 @@
                             <i class="bi bi-trash me-1"></i> Hapus
                         </button>
                     </div>
+                    <input type="hidden" name="contacts[{{ $i }}][id]" value="{{ $row['id'] ?? '' }}">
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label small mb-1">Nomor WhatsApp</label>

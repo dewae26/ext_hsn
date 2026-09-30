@@ -58,22 +58,60 @@
                 <div class="text-center mb-3">
                     <span class="badge {{ $result['result'] === 'active' ? 'hv-status-active' : 'hv-status-inactive' }}">
                         @if ($result['result'] === 'active')
-                            <i class="bi bi-check-circle me-1"></i> AKTIF
+                            <i class="bi bi-check-circle me-1"></i> VALID
                         @else
-                            <i class="bi bi-x-circle me-1"></i> TIDAK AKTIF
+                            <i class="bi bi-x-circle me-1"></i> TIDAK VALID
                         @endif
                     </span>
                 </div>
-                <dl class="row mb-0">
-                    <dt class="col-sm-3">NRP</dt>
-                    <dd class="col-sm-9">{{ $result['nrp'] }}</dd>
-                    <dt class="col-sm-3">Nama Karyawan</dt>
-                    <dd class="col-sm-9">{{ $result['employee_name'] }}</dd>
-                    <dt class="col-sm-3">Entitas</dt>
-                    <dd class="col-sm-9">{{ $result['group_company'] }}</dd>
-                    <dt class="col-sm-3">PT</dt>
-                    <dd class="col-sm-9">{{ $result['company_name'] }}</dd>
-                </dl>
+                <table class="table table-sm align-middle hv-detail mb-0">
+                    <tbody>
+                        <tr>
+                            <th scope="row">NRP</th>
+                            <td class="hv-detail-colon">:</td>
+                            <td>{{ $result['nrp'] }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Nama Karyawan</th>
+                            <td class="hv-detail-colon">:</td>
+                            <td>{{ $result['employee_name'] }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Entitas</th>
+                            <td class="hv-detail-colon">:</td>
+                            <td>{{ $result['group_company'] }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">PT</th>
+                            <td class="hv-detail-colon">:</td>
+                            <td>{{ $result['company_name'] }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">KTP</th>
+                            <td class="hv-detail-colon">:</td>
+                            <td>{{ $result['ktp'] ?? '-' }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Nominal Kamar / Malam</th>
+                            <td class="hv-detail-colon">:</td>
+                            <td>
+                                @if (! empty($result['room_rate']))
+                                    Rp {{ number_format($result['room_rate'], 0, ',', '.') }}
+                                @else
+                                    -
+                                @endif
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <hr>
+
+                <div class="small text-muted">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Jika status karyawan <strong>on hold / on month notice</strong>, maka fasilitas
+                    <strong>cashless nonaktif</strong>.
+                </div>
             </div>
         </div>
     @elseif ($result)

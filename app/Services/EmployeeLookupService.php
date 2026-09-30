@@ -15,7 +15,10 @@ class EmployeeLookupService
      *     nrp: string,
      *     employee_name: ?string,
      *     group_company: ?string,
-     *     company_name: ?string
+     *     company_name: ?string,
+     *     ktp: ?string,
+     *     job_level: ?string,
+     *     room_rate: ?int
      * }
      */
     public function verify(string $nrp): array
@@ -34,6 +37,9 @@ class EmployeeLookupService
                 'employee_name' => null,
                 'group_company' => null,
                 'company_name' => null,
+                'ktp' => null,
+                'job_level' => null,
+                'room_rate' => null,
             ];
         }
 
@@ -46,6 +52,23 @@ class EmployeeLookupService
             'employee_name' => $employee->fullname,
             'group_company' => $employee->group_company,
             'company_name' => $employee->company_name,
+            'ktp' => $employee->ktp,
+            'job_level' => $employee->job_level,
+            'room_rate' => $this->roomRate($employee->job_level),
         ];
+    }
+
+    /**
+     * Nominal kamar per malam berdasarkan job_level.
+     */
+    protected function roomRate(?string $jobLevel): int
+    {
+        $highLevels = config('hasnurverif.room_rate.high_levels', []);
+
+        $isHigh = in_array(trim((string) $jobLevel), $highLevels, true);
+
+        return (int) ($isHigh
+            ? config('hasnurverif.room_rate.high')
+            : config('hasnurverif.room_rate.regular'));
     }
 }

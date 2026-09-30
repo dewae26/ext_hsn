@@ -97,6 +97,42 @@ class HospitalManagementTest extends TestCase
             ->assertSessionHasErrors('slug');
     }
 
+    public function test_updating_hospital_preserves_contact_ids(): void
+    {
+        $this->actingAs($this->admin)->post(route('admin.hospitals.store'), [
+            'name' => 'RS Kontak',
+            'slug' => 'rs-kontak',
+            'contacts' => [
+                ['label' => 'Pusat', 'phone' => '081200000001'],
+                ['label' => 'Cabang', 'phone' => '081200000002'],
+            ],
+        ]);
+
+        $hospital = Hospital::where('slug', 'rs-kontak')->firstOrFail();
+        $firstContact = $hospital->contacts()->orderBy('id')->first();
+        $contactIds = $hospital->contacts()->pluck('id')->all();
+
+        $this->actingAs($this->admin)->put(route('admin.hospitals.update', $hospital), [
+            'name' => 'RS Kontak',
+            'slug' => 'rs-kontak',
+            'contacts' => [
+                ['id' => $firstContact->id, 'label' => 'Pusat Baru', 'phone' => '081200000009'],
+                ['label' => 'Cabang Dua', 'phone' => '081200000003'],
+            ],
+        ]);
+
+        $hospital->refresh();
+        $this->assertSame(2, $hospital->contacts()->count());
+        $this->assertDatabaseHas('hospital_contacts', [
+            'id' => $firstContact->id,
+            'label' => 'Pusat Baru',
+            'phone_normalized' => '6281200000009',
+        ]);
+        // ID lama yang tidak dikirim lagi akan terhapus, ID yang dipertahankan tetap ada.
+        $this->assertTrue(in_array($firstContact->id, $hospital->contacts()->pluck('id')->all(), true));
+        $this->assertNotEmpty(array_diff($contactIds, [$firstContact->id]));
+    }
+
     public function test_admin_can_deactivate_hospital(): void
     {
         $hospital = Hospital::create([

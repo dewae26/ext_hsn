@@ -174,6 +174,68 @@ class LoginAndLookupTest extends TestCase
         $this->assertSame('RS Contoh', $loginLog->hospital_name);
     }
 
+    public function test_lookup_still_works_after_contact_is_removed(): void
+    {
+        config(['hasnurverif.otp.enabled' => false]);
+        $hospital = $this->hospital();
+
+        $this->mock(EmployeeLookupService::class, function ($mock) {
+            $mock->shouldReceive('verify')->once()->andReturn([
+                'result' => 'active',
+                'feedback' => 'Karyawan Aktif',
+                'nrp' => '61260004',
+                'employee_name' => 'Eriton Latti Dewa',
+                'group_company' => 'SBU Mining',
+                'company_name' => 'PT. Graha Nusa Minergi',
+            ]);
+        });
+
+        $this->post(route('hospital.otp.request', $hospital->slug), ['phone' => '081234567890']);
+
+        // Admin menghapus nomor PIC saat sesi RS masih aktif.
+        $hospital->contacts()->delete();
+
+        $this->post(route('hospital.lookup', $hospital->slug), ['nrp' => '61260004'])
+            ->assertRedirect(route('hospital.dashboard', $hospital->slug));
+
+        $this->assertDatabaseHas('verification_logs', [
+            'hospital_id' => $hospital->id,
+            'nrp' => '61260004',
+            'hospital_contact_id' => null,
+        ]);
+    }
+
+    public function test_lookup_logs_ktp_and_room_rate(): void
+    {
+        config(['hasnurverif.otp.enabled' => false]);
+        $hospital = $this->hospital();
+
+        $this->mock(EmployeeLookupService::class, function ($mock) {
+            $mock->shouldReceive('verify')->once()->andReturn([
+                'result' => 'active',
+                'feedback' => 'Karyawan Aktif',
+                'nrp' => '61260004',
+                'employee_name' => 'Eriton Latti Dewa',
+                'group_company' => 'SBU Mining',
+                'company_name' => 'PT. Graha Nusa Minergi',
+                'ktp' => '3275080606940009',
+                'job_level' => 'Senior Supervisor',
+                'room_rate' => 676000,
+            ]);
+        });
+
+        $this->post(route('hospital.otp.request', $hospital->slug), ['phone' => '081234567890']);
+        $this->post(route('hospital.lookup', $hospital->slug), ['nrp' => '61260004'])
+            ->assertRedirect(route('hospital.dashboard', $hospital->slug));
+
+        $this->assertDatabaseHas('verification_logs', [
+            'hospital_id' => $hospital->id,
+            'nrp' => '61260004',
+            'ktp' => '3275080606940009',
+            'room_rate' => 676000,
+        ]);
+    }
+
     public function test_not_found_lookup_is_logged(): void
     {
         $hospital = $this->hospital();
