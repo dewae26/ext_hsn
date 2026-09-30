@@ -10,7 +10,7 @@ Sistem verifikasi status data karyawan Hasnur Group. Digunakan oleh Rumah Sakit 
   - Dashboard grafik pengecekan per RS per hari.
   - Log verifikasi NRP & log login RS (nomor PIC, hasil, feedback) + export Excel.
 - **Rumah Sakit** (login via link unik `/rs/{slug}` + nomor WA PIC terdaftar, siap OTP WhatsApp):
-  - Cek status karyawan: NRP, Nama, Entitas, PT, Status (Aktif/Tidak Aktif).
+  - Cek status karyawan: NRP, Nama, Entitas, PT, KTP, Nominal Kamar/Malam, Status (Valid/Tidak Valid).
   - Data karyawan dibaca langsung (read-only) dari database MHCIS.
   - Mendukung PKS view-only.
 
@@ -101,4 +101,26 @@ php artisan test
 
 - Folder `public/build` dan `vendor`/`node_modules` tidak disimpan di repo → **wajib** `composer install` dan `npm run build` saat deploy.
 - `public/pdf.worker.min.mjs` disimpan di repo untuk mendukung viewer PDF (dibuat ulang otomatis oleh `npm run build`).
-- Database MHCIS diakses **read-only**; aplikasi tidak menulis/memigrasi ke sana.
+- Database MHCIS diakses **read-only**; aplikasi tidak menulis/migrasi ke sana.
+
+## Lisensi
+
+Semua aset pihak ketiga yang digunakan berlisensi **permissive/gratis** (tidak ada font berbayar). Font yang dipakai **di-self-host** melalui paket npm sehingga tidak mengambil daya dari server eksternal.
+
+| Komponen | Lisensi |
+|---|---|
+| Nunito (font) | SIL Open Font License 1.1 |
+| Bootstrap, Bootstrap Icons | MIT |
+| jQuery | MIT |
+| Chart.js | MIT |
+| DataTables (datatables.net) | MIT |
+| Alpine.js | MIT |
+| Popper (`@popperjs/core`) | MIT |
+| PDF.js (`pdfjs-dist`) | Apache-2.0 |
+| Laravel Framework | MIT |
+| Laravel Excel (`maatwebsite/excel`) | MIT |
+| PhpSpreadsheet | MIT |
+
+- **Nunito** berlisensi SIL OFL 1.1 → bebas dipakai untuk keperluan komersial, termasuk di-embed/di-self-host.
+- Teks lisensi lengkap tiap paket tersedia di direktori `node_modules/<paket>/LICENSE`.
+- Logo Hasnur Group merupakan aset brand milik organisasi dan hanya digunakan pada sistem internal ini.
